@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.18.0 (06a2e56)
+  labels:
+    io.kompose.service: node
+  name: node
+spec: 
+  selector:
+    matchLabels:
+      io.kompose.service: node
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: node
+    spec:
+      containers:
+      - image: maheshagiratech/kube
+        name: node
+        ports:
+        - containerPort: 3000
+        resources: {}
+        volumeMounts:
+        - mountPath: /code
+          name: node-claim0
+      restartPolicy: Always
+      volumes:
+      - name: node-claim0
+        persistentVolumeClaim:
+          claimName: node-claim0
+status: {}
